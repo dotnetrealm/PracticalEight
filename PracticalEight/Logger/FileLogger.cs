@@ -1,10 +1,11 @@
 ﻿using Organization.Interfaces;
+using Organization.Services;
 
-namespace Organization.Services
+namespace Organization.Logger
 {
     public class FileLogger : ILogger
     {
-        private static readonly string _logPath = Directory.GetCurrentDirectory() + "/Logs/"+ DateTime.Now.ToShortDateString() +"/";
+        private static readonly string _logPath = Directory.GetCurrentDirectory() + "/Logs/" + DateTime.Now.ToShortDateString() + "/";
         private static readonly string _fileName = ConfigService.GetSection("Logger").GetSection("FileName").Value!;
 
         static FileLogger()
@@ -18,6 +19,7 @@ namespace Organization.Services
                 File.Create(_logPath + _fileName);
             }
         }
+
         public void LogAlert(string message)
         {
             using StreamWriter sw = File.CreateText(_logPath + _fileName);
@@ -61,7 +63,7 @@ namespace Organization.Services
             sw.WriteLine("Guid: " + Guid.NewGuid());
             sw.WriteLine("Type: SUCCESS");
             sw.WriteLine("TimeStamp: " + DateTime.Now);
-            sw.WriteLine("Message: " + message );
+            sw.WriteLine("Message: " + message);
             sw.WriteLine();
             sw!.Dispose();
         }

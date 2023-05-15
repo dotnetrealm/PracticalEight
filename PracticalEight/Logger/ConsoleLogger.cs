@@ -1,13 +1,13 @@
 ﻿using Organization.Interfaces;
 
-namespace Organization.Services
+namespace Organization.Logger
 {
-    internal class ConsoleLogger : ILogger
+    public class ConsoleLogger : ILogger
     {
         public void LogAlert(string message)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine($"[ALERT]: {message}");
+            Console.WriteLine($"{message}");
             Console.ForegroundColor = ConsoleColor.White;
         }
 
@@ -21,14 +21,14 @@ namespace Organization.Services
         public void LogInfo(string message)
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine($"[Info]: {message}");
+            Console.WriteLine($"{message}");
             Console.ForegroundColor = ConsoleColor.White;
         }
 
         public void LogSuccess(string message)
         {
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"[Success]: {message}");
+            Console.WriteLine($"{message}");
             Console.ForegroundColor = ConsoleColor.White;
         }
     }

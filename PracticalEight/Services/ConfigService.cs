@@ -8,7 +8,7 @@ namespace Organization.Services
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json")
             .Build();
-            
+
         public static string Get(string name)
         {
             return _config[name]!;
@@ -16,8 +16,7 @@ namespace Organization.Services
 
         public static IConfigurationSection GetSection(string name)
         {
-            return _config.GetSection(name);    
+            return _config.GetSection(name);
         }
-
     }
 }
