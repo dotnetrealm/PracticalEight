@@ -4,9 +4,10 @@ namespace Organization.Services
 {
     public interface ILeaveRequestServices
     {
+        List<Leave> GetAllLeaveRequests();
         bool AddLeaveRequest(Leave leave);
-        void ApproveLeave(Guid leaveId);
-        int GetLeaveStatus(Guid leaveId);
-        void RejectLeave(Guid leaveId);
+        bool ApproveLeave(Guid leaveId);
+        int? GetLeaveStatus(Guid leaveId);
+        bool RejectLeave(Guid leaveId);
     }
 }

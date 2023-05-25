@@ -13,7 +13,6 @@ namespace Organization.Services
         {
             return _config[name]!;
         }
-
         public static IConfigurationSection GetSection(string name)
         {
             return _config.GetSection(name);

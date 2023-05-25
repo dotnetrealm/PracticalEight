@@ -2,9 +2,9 @@
 {
     public interface ILogger
     {
-        void LogInfo(string message);
-        void LogError(string message);
-        void LogSuccess(string message);
-        void LogAlert(string message);
+        void Info(string message);
+        void Error(string message);
+        void Success(string message);
+        void Alert(string message);
     }
 }

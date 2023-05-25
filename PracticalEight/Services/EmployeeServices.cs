@@ -5,79 +5,59 @@ using Organization.Models;
 
 namespace Organization.Services
 {
-    public sealed class EmployeeServices : IEmployeeServices
+    public sealed class EmployeeServices : EmployeeBase
     {
-        readonly List<Employee> employees = new List<Employee>();
-        readonly LoggerService FileLogger = new(new FileLogger());
-        readonly LoggerService ConsoleLogger = new(new ConsoleLogger());
+        readonly List<Employee> _employees = new List<Employee>();
+        readonly LoggerService _fileLogger = new(new FileLogger());
+        readonly LoggerService _consoleLogger = new(new ConsoleLogger());
 
         public EmployeeServices()
         {
-            employees.Add(new Employee()
-            {
-                Id = Guid.NewGuid(),
-                EmpName = "Bhavin",
-                Gender = 'M',
-                RoleId = (int)Roles.TRAINEE,
-                AssignedLeave = 20,
-                RemainingLeave = 20,
-                DepartmentId = (int)Department.DOTNET,
-                Salary = (decimal)SalaryPack.TRAINEE
-            });
-            employees.Add(new Employee()
-            {
-                Id = Guid.NewGuid(),
-                EmpName = "Vipul Kumar",
-                Gender = 'M',
-                RoleId = (int)Roles.SENIOR,
-                AssignedLeave = 10,
-                RemainingLeave = 10,
-                DepartmentId = (int)Department.DOTNET,
-                Salary = (decimal)SalaryPack.SENIOR
-            });
+            _employees.Add(new Employee("Bhavin", (int)Department.DOTNET, (decimal)SalaryPack.TRAINEE, 'M', (int)Roles.TRAINEE, new Guid("481c1957-1e87-4d93-930d-03b53a0fc976")));
+            _employees.Add(new Employee("Vipul Kumar", (int)Department.DOTNET, (decimal)SalaryPack.SENIOR, 'M', (int)Roles.SENIOR, new Guid("f6ec2d9d-ce0e-440a-aa61-df3b3f3e2914")));
         }
-        public Employee GetEmployeeDetails(Guid empId)
+        public override Employee GetEmployeeDetails(Guid empId)
         {
-            return employees.First(e => e.Id == empId);
+            return _employees.First(e => e.Id == empId);
         }
-
-        public IEnumerable<Employee> GetEmployeesList()
+        public override List<Employee> GetEmployeesList()
         {
-            return employees;
+            return _employees;
         }
-
-        public IEnumerable<Employee> GetEmployeesList(int RoleId)
+        public override List<Employee> GetEmployeesList(int departmentId)
         {
-            return employees.FindAll(e => e.RoleId == RoleId);
+            return _employees.FindAll(e => e.DepartmentId == departmentId);
         }
-
-        public bool AddEmployee(Employee employee)
+        public override bool AddEmployee(Employee employee)
         {
             try
             {
-                employees.Add(employee);
-                FileLogger.Success("Add new employee with ID: " + employee.Id);
-                ConsoleLogger.Success("New employee added");
+                _employees.Add(employee);
+                _fileLogger.Success("Add new employee with ID: " + employee.Id);
+                _consoleLogger.Success("New employee added");
                 return true;
             }
             catch (Exception ex)
             {
-                FileLogger.Error(ex.Message);
+                _fileLogger.Error(ex.Message);
                 return false;
             }
         }
-
-        public bool RemoveEmployee(Guid empId)
+        public override bool RemoveEmployee(Guid empId)
         {
-            FileLogger.Info("Remove employee of ID: " + empId);
-            ConsoleLogger.Info("Employee removed successfully");
-            return employees.Remove(employees.First(e => e.Id == empId));
+            _fileLogger.Info("Remove employee of ID: " + empId);
+            _consoleLogger.Info("Employee removed successfully");
+            return _employees.Remove(_employees.First(e => e.Id == empId));
+        }
+        public override void PromoteEmployee(Guid empId)
+        {
+            _employees!.First(e => e.Id == empId).RoleId++;
+            _consoleLogger.Success("Wohooo, Employee got promotion... ");
         }
 
-        public void PromoteEmployee(Guid empId)
+        public override IEnumerable<Employee> FindEmployee(Guid? empId, string? empName)
         {
-            employees!.Where(e => e.Id == empId).First().RoleId++;
-            ConsoleLogger.Success("Wohooo, Employee got promotion... ");
+            return _employees.FindAll(e => e.Id.ToString().Contains(empId.ToString()!) || e.Name.Contains(empName!));
         }
     }
 }

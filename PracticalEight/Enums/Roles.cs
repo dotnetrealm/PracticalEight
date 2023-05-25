@@ -2,9 +2,8 @@
 {
     enum Roles
     {
-        LEAD = 1,
-        ADMINISTRATOR,
-        MANAGER,
+        MANAGER = 1,
+        LEAD,
         SENIOR,
         TRAINEE
     }

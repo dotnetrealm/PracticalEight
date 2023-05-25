@@ -4,28 +4,28 @@ namespace Organization.Logger
 {
     public class ConsoleLogger : ILogger
     {
-        public void LogAlert(string message)
+        public void Alert(string message)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine($"{message}");
             Console.ForegroundColor = ConsoleColor.White;
         }
 
-        public void LogError(string message)
+        public void Error(string message)
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine($"[Error]: {message}");
             Console.ForegroundColor = ConsoleColor.White;
         }
 
-        public void LogInfo(string message)
+        public void Info(string message)
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine($"{message}");
             Console.ForegroundColor = ConsoleColor.White;
         }
 
-        public void LogSuccess(string message)
+        public void Success(string message)
         {
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine($"{message}");

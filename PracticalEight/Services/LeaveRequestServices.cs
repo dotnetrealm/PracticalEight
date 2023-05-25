@@ -6,48 +6,52 @@ namespace Organization.Services
 {
     public sealed class LeaveRequestServices : ILeaveRequestServices
     {
-        static List<Leave> LeaveRequests = new List<Leave>();
-        readonly LoggerService FileLogger = new(new FileLogger());
-        readonly LoggerService ConsoleLogger = new(new ConsoleLogger());
+        static List<Leave> _leaveRequests = new List<Leave>();
+        readonly LoggerService _fileLogger = new(new FileLogger());
+        readonly LoggerService _consoleLogger = new(new ConsoleLogger());
+
+        public LeaveRequestServices()
+        {
+            _leaveRequests.Add(new Leave(Guid.NewGuid(), new Guid("f6ec2d9d-ce0e-440a-aa61-df3b3f3e2914"), new DateOnly().AddDays(5), new DateOnly().AddDays(8), 3, "Leg Injury", DateTime.Now));
+            _leaveRequests.Add(new Leave(Guid.NewGuid(), new Guid("481c1957-1e87-4d93-930d-03b53a0fc976"), new DateOnly().AddDays(5), new DateOnly().AddDays(12), 7, "Trip to manali", DateTime.Now));
+        }
+        public List<Leave> GetAllLeaveRequests()
+        {
+            return _leaveRequests;
+        }
         public bool AddLeaveRequest(Leave leave)
         {
             try
             {
-                LeaveRequests.Add(
-                    new Leave
-                    {
-                        Id = Guid.NewGuid(),
-                        From = leave.From,
-                        To = new DateOnly(leave.From!.Value.Year, leave.From.Value.Month, leave.From.Value.Day).AddDays(leave.NumberOfDays),
-                        Reason = leave.Reason,
-                        EmployeeId = leave.EmployeeId,
-                        CreatedAt = DateTime.Now,
-                        NumberOfDays = leave.NumberOfDays,
-                        LeaveStatus = (int)LeaveStatus.Pending,
-                    }
-                );
-                ConsoleLogger.Success("Employee added successfully.\n\n");
+                _leaveRequests.Add(new Leave(Guid.NewGuid(), leave.EmployeeId, leave.From, new DateOnly(leave.From!.Value.Year, leave.From.Value.Month, leave.From.Value.Day).AddDays(leave.NumberOfDays), leave.NumberOfDays, leave.Reason, DateTime.Now));
+                _consoleLogger.Success("Employee added successfully.\n\n");
                 return true;
             }
             catch (Exception ex)
             {
-                FileLogger.Error(ex.Message);
+                _fileLogger.Error(ex.Message);
                 return false;
             }
         }
-        public int GetLeaveStatus(Guid leaveId)
+        public int? GetLeaveStatus(Guid leaveId)
         {
-            return LeaveRequests.Where(e => e.Id == leaveId).First().LeaveStatus;
+            Leave? leave = _leaveRequests.Find(e => e.Id == leaveId);
+            if (leave == null) return null;
+            return leave.LeaveStatus;
         }
-        public void ApproveLeave(Guid leaveId)
+        public bool ApproveLeave(Guid leaveId)
         {
-            LeaveRequests.First(e => e.Id == leaveId).LeaveStatus = (int)LeaveStatus.Approve;
-            ConsoleLogger.Success("Leave request approved successfully.\n\n");
+            Leave? leave = _leaveRequests.Find(e => e.Id == leaveId);
+            if (leave == null) return false;
+            leave.LeaveStatus = (int)LeaveStatus.Approved;
+            return true;
         }
-        public void RejectLeave(Guid leaveId)
+        public bool RejectLeave(Guid leaveId)
         {
-            LeaveRequests.Where(e => e.Id == leaveId).First().LeaveStatus = (int)LeaveStatus.Reject;
-            ConsoleLogger.Info("Leave request rejected.\n\n");
+            Leave? leave = _leaveRequests.Find(e => e.Id == leaveId);
+            if (leave == null) return false;
+            leave.LeaveStatus = (int)LeaveStatus.Rejected;
+            return true;
         }
     }
 }

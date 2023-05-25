@@ -3,7 +3,7 @@
     internal enum LeaveStatus
     {
         Pending = 1,
-        Approve,
-        Reject
+        Approved,
+        Rejected
     }
 }

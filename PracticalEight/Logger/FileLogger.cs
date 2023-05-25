@@ -20,9 +20,9 @@ namespace Organization.Logger
             }
         }
 
-        public void LogAlert(string message)
+        public void Alert(string message)
         {
-            using StreamWriter sw = File.CreateText(_logPath + _fileName);
+            using StreamWriter sw = File.AppendText(_logPath + _fileName);
             sw.WriteLine();
             sw.WriteLine("Guid: " + Guid.NewGuid());
             sw.WriteLine("Type: ALERT");
@@ -32,9 +32,9 @@ namespace Organization.Logger
             sw!.Dispose();
         }
 
-        public void LogError(string message)
+        public void Error(string message)
         {
-            using StreamWriter sw = File.CreateText(_logPath + _fileName);
+            using StreamWriter sw = File.AppendText(_logPath + _fileName);
             sw.WriteLine();
             sw.WriteLine("Guid: " + Guid.NewGuid());
             sw.WriteLine("Type: ERROR");
@@ -44,9 +44,9 @@ namespace Organization.Logger
             sw!.Dispose();
         }
 
-        public void LogInfo(string message)
+        public void Info(string message)
         {
-            using StreamWriter sw = File.CreateText(_logPath + _fileName);
+            using StreamWriter sw = File.AppendText(_logPath + _fileName);
             sw.WriteLine();
             sw.WriteLine("Guid: " + Guid.NewGuid());
             sw.WriteLine("Type: INFORMATION");
@@ -56,9 +56,9 @@ namespace Organization.Logger
             sw!.Dispose();
         }
 
-        public void LogSuccess(string message)
+        public void Success(string message)
         {
-            using StreamWriter sw = File.CreateText(_logPath + _fileName);
+            using StreamWriter sw = File.AppendText(_logPath + _fileName);
             sw.WriteLine();
             sw.WriteLine("Guid: " + Guid.NewGuid());
             sw.WriteLine("Type: SUCCESS");
